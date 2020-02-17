@@ -19,7 +19,7 @@ defmodule Skynet.MixProject do
   end
 
   defp description do
-    "Skynet client for uploading and download data from Sia Skynet"
+    "Skynet client for uploading and downloading files from Sia Skynet"
   end
 
   defp package do

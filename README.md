@@ -1,11 +1,10 @@
 # Elixir Skynet
 
-**TODO: Add description**
+Skynet client for uploading and downloading files from Sia Skynet
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `skynet` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `skynet` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +14,16 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/skynet](https://hexdocs.pm/skynet).
+
+## Usage
+
+```elixir
+# Uploading a file
+{:ok, %{skylink: skylink}} = Skynet.upload("path/to/file.jpeg")
+
+# Downloading a file
+{:ok, %{file: file, filename: filename}} = Skynet.download(skylink)
+```
+
+The documentation can be found at [https://hexdocs.pm/skynet](https://hexdocs.pm/skynet).
 
