@@ -10,7 +10,6 @@ defmodule Skynet.MixProject do
       version: @version,
       description: description(),
       package: package(),
-      version: "0.1.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -19,7 +18,7 @@ defmodule Skynet.MixProject do
   end
 
   defp description do
-    "Skynet client for uploading and downloading files from Sia Skynet"
+    "Client for uploading and downloading files from Sia Skynet"
   end
 
   defp package do
