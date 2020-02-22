@@ -1,7 +1,7 @@
 defmodule Skynet.MixProject do
   use Mix.Project
 
-  @version "0.1.2"
+  @version "0.1.3"
 
   def project do
     [
@@ -39,8 +39,9 @@ defmodule Skynet.MixProject do
   def docs do
     [
       api_reference: false,
-      main: Skynet,
-      extra_section: "Guides"
+      main: "overview",
+      extra_section: "Guides",
+      extras: ["docs/OVERVIEW.md": [filename: "overview", title: "Overview"]]
     ]
   end
 
