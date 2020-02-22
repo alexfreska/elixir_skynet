@@ -1,7 +1,7 @@
 defmodule Skynet.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
 
   def project do
     [
@@ -18,7 +18,7 @@ defmodule Skynet.MixProject do
   end
 
   defp description do
-    "Client for uploading and downloading files from Sia Skynet"
+    "Client for interfacing with the Sia Skynet file sharing protocol"
   end
 
   defp package do

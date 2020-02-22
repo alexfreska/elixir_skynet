@@ -18,7 +18,9 @@ defmodule Skynet do
       iex> Skynet.upload("path/to/file.jpeg")
       {:ok,
         %{
-          skylink: "BAxOl5bb0oXpmIWOK115bctmbV9Jogl-FcyMmIzb5mV1Za" 
+          bitfield: 0,
+          merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
+          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
         }
       }
 
@@ -26,7 +28,9 @@ defmodule Skynet do
       iex> Skynet.upload("path/to/file.jpeg", portal_url: "https://skydrain.com")
       {:ok,
         %{
-          skylink: "BAxOl5bb0oXpmIWOK115bctmbV9Jogl-FcyMmIzb5mV1Za" 
+          bitfield: 0,
+          merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
+          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
         }
       }
 
@@ -112,15 +116,19 @@ defmodule Skynet do
       iex> Skynet.upload("path/to/file.jpeg")
       {:ok,
         %{
-          skylink: "BAxOl5bb0oXpmIWOK115bctmbV9Jogl-FcyMmIzb5mV1Za" 
+          bitfield: 0,
+          merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
+          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
         }
       }
 
       # Configure the upload's target portal URL and timeout
-      iex> Skynet.upload("path/to/file.jpeg", portal_url: "https://skydrain.com", timeout: 6_000)
+      iex> Skynet.upload("path/to/file.jpeg", portal_url: "https://skydrain.net", timeout: 6_000)
       {:ok,
         %{
-          skylink: "BAxOl5bb0oXpmIWOK115bctmbV9Jogl-FcyMmIzb5mV1Za" 
+          bitfield: 0,
+          merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
+          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
         }
       }
   """
@@ -128,14 +136,13 @@ defmodule Skynet do
     config = build_config(options)
     client = build_client(config)
 
-    body =
-      Multipart.new()
-      |> Multipart.add_file(file_path, name: Keyword.get(config, :portal_file_fieldname))
-    
     upload_path = Keyword.get(config, :portal_upload_path) <> "/" <> UUID.uuid4()
 
-    upload_path
-    |> post(client, body)
+    body =
+      Tesla.Multipart.new()
+      |> Tesla.Multipart.add_file(file_path, name: Keyword.get(config, :portal_file_fieldname))
+
+    post(client, upload_path, body)
     |> case do
       {:ok, %Tesla.Env{body: body}} -> {:ok, transform_body(body)}
       {:error, error} -> {:error, error}
@@ -157,9 +164,9 @@ defmodule Skynet do
     params = [
       {Tesla.Middleware.BaseUrl, Keyword.get(config, :portal_url)},
       {Tesla.Middleware.Headers, Keyword.get(config, :headers)},
-      {Tesla.Middleware.Timeout, Keyword.get(config, :timeout)},
-      {Tesla.Middleware.FormUrlencoded},
-      {Tesla.Middleware.Logger}
+      {Tesla.Middleware.Timeout, timeout: Keyword.get(config, :timeout)},
+      Tesla.Middleware.FormUrlencoded,
+      # Tesla.Middleware.Logger
     ]
     Tesla.client(params)
   end
