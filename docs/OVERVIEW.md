@@ -1,4 +1,4 @@
-<a href="https://siasky.net"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/elixir.png" alt="Elixir" width="70" /><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/skynet.svg" alt="Skynet" width="200" /></a>
+<a href="https://siasky.net"><img src="assets/elixir.png" alt="Elixir" width="70" /><img src="assets/skynet.svg" alt="Skynet" width="200" /></a>
 
 Elixir client for interfacing with the <a href="https://sia.tech/">Sia</a> <a href="https://siasky.net/">Skynet</a> file sharing protocol.
 
@@ -55,4 +55,4 @@ Please view the complete module documentation for more details.
 
 
 ## Remarks
-<a href="https://sia/tech"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/built-with-sia.svg" alt="Built with Sia" width="80" /></a>
+<a href="https://sia/tech"><img src="assets/built-with-sia.svg" alt="Built with Sia" width="80" /></a>

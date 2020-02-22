@@ -1,4 +1,4 @@
-<a href="https://siasky.net"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/elixir.png" alt="Elixir" width="70" /><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/skynet.svg" alt="Skynet" width="200" /></a>
+<a href="https://siasky.net"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/assets/elixir.png" alt="Elixir" width="70" /><img src="https://github.com/alexfreska/elixir_skynet/blob/master/assets/skynet.svg" alt="Skynet" width="200" /></a>
 
 Unofficial Elixir client for uploading and downloading files from <a href="https://sia.tech/">Sia</a> <a href="https://siasky.net/">Skynet</a>.
 
@@ -29,4 +29,4 @@ end
 The documentation can be found at [https://hexdocs.pm/skynet](https://hexdocs.pm/skynet).
 
 ## Remarks
-<a href="https://sia/tech"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/images/built-with-sia.svg" alt="Built with Sia" width="80" /></a>
+<a href="https://sia/tech"><img src="https://github.com/alexfreska/elixir_skynet/blob/master/assets/built-with-sia.svg" alt="Built with Sia" width="80" /></a>

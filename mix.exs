@@ -41,6 +41,7 @@ defmodule Skynet.MixProject do
       api_reference: false,
       main: "overview",
       extra_section: "Guides",
+      assets: "assets",
       extras: ["docs/OVERVIEW.md": [filename: "overview", title: "Overview"]]
     ]
   end
