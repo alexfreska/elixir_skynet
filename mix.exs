@@ -1,7 +1,7 @@
 defmodule Skynet.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.2"
 
   def project do
     [
@@ -13,7 +13,8 @@ defmodule Skynet.MixProject do
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      source_url: "https://github.com/alexfreska/elixir_skynet"
+      source_url: "https://github.com/alexfreska/elixir_skynet",
+      docs: docs()
     ]
   end
 
@@ -32,6 +33,14 @@ defmodule Skynet.MixProject do
   def application do
     [
       extra_applications: [:logger]
+    ]
+  end
+
+  def docs do
+    [
+      api_reference: false,
+      main: Skynet,
+      extra_section: "Guides"
     ]
   end
 

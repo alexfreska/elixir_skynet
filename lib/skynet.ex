@@ -20,7 +20,7 @@ defmodule Skynet do
         %{
           bitfield: 0,
           merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
+          skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
         }
       }
 
@@ -30,7 +30,7 @@ defmodule Skynet do
         %{
           bitfield: 0,
           merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
+          skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
         }
       }
 
@@ -40,23 +40,10 @@ defmodule Skynet do
   - `:portal_url` - Configure the portal address, defaults to https://siasky.net
   - `:portal_upload_path` - Configure the portal upload path, defaults to "/skynet/skyfile"
   - `:portal_file_fieldname` - Configure the portal file fieldname, defaults to "file"
-  - `:custom_filename` - ??
   - `:headers` - Add headers to the request, eg: `[authorization: "Bearer <token>"]`
   - `:timeout` - Configure the timeout, defaults to 5 seconds. Note: invalid Skylink will hang until the timeout elapses.
 
   """
-
-  @default_config [
-    portal_url: "https://siasky.net",
-    portal_upload_path: "/skynet/skyfile",
-    portal_file_fieldname: "file",
-    custom_filename: "",
-    base_file_path: "/",
-    headers: [],
-    timeout: 5_000
-  ]
-
-  use Tesla, docs: false
 
   @doc """
   Download a file from Skynet.
@@ -68,7 +55,6 @@ defmodule Skynet do
     - `:portal_url` - Configure the portal address, defaults to https://siasky.net
     - `:portal_upload_path` - Configure the portal upload path, defaults to "/skynet/skyfile"
     - `:portal_file_fieldname` - Configure the portal file fieldname, defaults to "file"
-    - `:custom_filename` - ??
     - `:headers` - Add headers to the request, eg: `[authorization: "Bearer <token>"]`
     - `:timeout` - Configure the timeout, defaults to 5 seconds. Note: invalid Skylink will hang until the timeout elapses.
 
@@ -83,17 +69,7 @@ defmodule Skynet do
       }
   """
   def download(skylink, options \\ []) do
-    config = build_config(options)
-    client = build_client(config)
-
-    get(client, skylink)
-    |> case do
-      {:ok, %Tesla.Env{body: body, headers: headers}} ->
-        {:ok, %{file: body, filename: get_filename(headers)}}
-
-      {:error, error} ->
-        {:error, error}
-    end
+    Skynet.Client.download(skylink, options)
   end
 
   @doc """
@@ -106,7 +82,6 @@ defmodule Skynet do
     - `:portal_url` - Configure the portal address, defaults to https://siasky.net
     - `:portal_upload_path` - Configure the portal upload path, defaults to "/skynet/skyfile"
     - `:portal_file_fieldname` - Configure the portal file fieldname, defaults to "file"
-    - `:custom_filename` - ??
     - `:headers` - Add headers to the request, eg: `[authorization: "Bearer <token>"]`
     - `:timeout` - Configure the timeout, defaults to 5 seconds. Note: invalid Skylink will hang until the timeout elapses.
 
@@ -118,7 +93,7 @@ defmodule Skynet do
         %{
           bitfield: 0,
           merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
+          skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
         }
       }
 
@@ -128,76 +103,11 @@ defmodule Skynet do
         %{
           bitfield: 0,
           merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-          skylink: "aaceigsvjkk7yy2y9z-dxth5niuakwo_jh4lpbliaw5x1g"
+          skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
         }
       }
   """
   def upload(file_path, options \\ []) do
-    config = build_config(options)
-    client = build_client(config)
-
-    upload_path = Keyword.get(config, :portal_upload_path) <> "/" <> UUID.uuid4()
-
-    body =
-      Tesla.Multipart.new()
-      |> Tesla.Multipart.add_file(file_path, name: Keyword.get(config, :portal_file_fieldname))
-
-    post(client, upload_path, body)
-    |> case do
-      {:ok, %Tesla.Env{body: body}} -> {:ok, transform_body(body)}
-      {:error, error} -> {:error, error}
-    end
-  end
-
-  @doc """
-  Build config by merging user defined options into defaults.
-  """
-  defp build_config(options \\ []) do
-    Keyword.merge(@default_config, options)
-  end
-
-  @doc """
-  Build Tesla client and configure request middleware.
-  """
-  defp build_client(options \\ []) do
-    config = build_config(options)
-    params = [
-      {Tesla.Middleware.BaseUrl, Keyword.get(config, :portal_url)},
-      {Tesla.Middleware.Headers, Keyword.get(config, :headers)},
-      {Tesla.Middleware.Timeout, timeout: Keyword.get(config, :timeout)},
-      Tesla.Middleware.FormUrlencoded,
-      # Tesla.Middleware.Logger
-    ]
-    Tesla.client(params)
-  end
-
-  @doc """
-  Download response helper that gets filename from content disposition header.
-  """
-  defp get_filename(headers) do
-    content_disposition =
-      Enum.find(headers, fn {name, value} -> name == "content-disposition" end)
-
-    case content_disposition do
-      {key, value} -> String.split(value, ~s(filename=\")) |> Enum.at(1) |> String.slice(0..-2)
-      nil -> ""
-    end
-  end
-
-  @doc """
-  Response helper that decodes JSON and transforms top level keys into atoms.
-  """
-  defp transform_body(body) do
-    body
-    |> Jason.decode!()
-    |> transform_keys_to_atoms()
-  end
-
-  @doc """
-  Transforms a map's top level keys into atoms.
-  """
-  defp transform_keys_to_atoms(map) do
-    map
-    |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+    Skynet.Client.upload(file_path, options)
   end
 end
