@@ -7,7 +7,7 @@ The package can be installed by adding `skynet` to your list of dependencies in 
 
     def deps do
       [
-        {:skynet, "~> 0.1.5"}
+        {:skynet, "~> 0.1.6"}
       ]
     end
 
@@ -27,7 +27,7 @@ The package can be installed by adding `skynet` to your list of dependencies in 
     {:ok,
       %{
         skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g",
-        # In addition to the Skylink, the merkeroot and bitfield are also returned for convenience
+        # In addition to the Skylink, the merkleroot and bitfield are also returned for convenience
         merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
         bitfield: 0
       }
