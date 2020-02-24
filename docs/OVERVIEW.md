@@ -3,12 +3,11 @@
 Elixir client for interfacing with the <a href="https://sia.tech/">Sia</a> <a href="https://siasky.net/">Skynet</a> file sharing protocol.
 
 ## Installation
-
 The package can be installed by adding `skynet` to your list of dependencies in `mix.exs`:
 
     def deps do
       [
-        {:skynet, "~> 0.1.0"}
+        {:skynet, "~> 0.1.5"}
       ]
     end
 
@@ -27,19 +26,20 @@ The package can be installed by adding `skynet` to your list of dependencies in 
     iex> Skynet.upload("path/to/file.jpeg")
     {:ok,
       %{
-        bitfield: 0,
+        skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g",
+        # In addition to the Skylink, the merkeroot and bitfield are also returned for convenience
         merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-        skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
+        bitfield: 0
       }
     }
 
-    # Configure the target portal URL to someting other than siasky.net
+    # Configure options, like the target portal URL
     iex> Skynet.upload("path/to/file.jpeg", portal_url: "https://skydrain.com")
     {:ok,
       %{
-        bitfield: 0,
+        skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g",
         merkleroot: "84220b2f24a93bc98db2f59f9d5d38799e25002b03bf8c7e0ba5b2e26b0e57d6",
-        skylink: "AACEIgsvJKk7yY2y9Z-dXTh5niUAKwO_jH4LpbLiaw5X1g"
+        bitfield: 0
       }
     }
 
